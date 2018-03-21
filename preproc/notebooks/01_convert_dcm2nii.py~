@@ -1,0 +1,96 @@
+
+# coding: utf-8
+
+# In[ ]:
+
+get_ipython().magic('matplotlib inline')
+from IPython.display import display
+from os.path import isfile, join, exists
+from os import listdir, makedirs, walk, remove, getlogin
+from nilearn import image, plotting
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+# In[ ]:
+
+# Set subject-specific parameters
+
+# Set subject ID
+subid = 'impr_g1_s3_020518'
+
+# manually set scan num, type, and conds
+epis = [9, 10, 11, 12]
+anat = 8
+fieldmaps = [13, 14]
+
+epi_cond = ### ENTER EPI CONDITIONS (E.G. POS1) ####
+
+
+# In[ ]:
+
+### Set experiment-specific parameters #####
+
+# Set data dir
+projdir = '/mnt/bucket/labs/hasson/mai/projects/impressions/data'
+
+#Set code dir
+codedir = '/mnt/bucket/labs/hasson/mai/code/preproc/bash'
+
+# Set rawdata path
+rawdir = join(projdir, subid, 'raw', 'dcm')
+
+# Set savefile
+savefile = join(projdir, subid, 'scanInfo.csv')
+
+# Set output dir
+outputdir = join(projdir, subid, 'raw', 'niftis_good')
+if not exists(outputdir):
+    print(outputdir + ' does not exist, creating')
+    makedirs(outputdir)
+
+
+# In[ ]:
+
+### Convert dicoms to niftis ####
+# This script copies dicoms from the raw directory to the nifti preproc dir.
+# Then it unzips everything and converts dicoms to niftis. Finally, it deletes
+# the original dicoms.
+get_ipython().system("{join(codedir, 'prep_and_dcm2nii.sh')} {rawdir} {outputdir}")
+
+
+# In[ ]:
+
+# Create subject information file
+
+scanNum = epis + anat + fieldmaps 
+scanType = ['epi', 'epi', 'epi', 'epi', 'anat', 'fieldmap', 'fieldmap']
+scanCond = epi_cond + ['epi_pieman', 'anat', 'se_fieldmap_ap', 'se_fieldmap_pa' ]
+
+# automatically get scan names
+scanNames = np.array([])
+niftis_all = listdir(outputdir)
+for i in scanNum:
+    for filename in niftis_all:
+        if str(i) + '_' in filename:
+            scanNames = np.append(scanNames, filename)
+            break       
+            
+# make dataframe
+df = pd.DataFrame({'scanNum': scanNum,'scanType': scanType, 'scanNameOrig':scanNames}, index=scanCond)
+df
+
+
+# In[ ]:
+
+# if everything looks fine, save dataframe to subjects dir
+df.to_csv(savefile)
+
+print('**** done!')
+
+
+# In[ ]:
+
+
+
