@@ -9,13 +9,15 @@
 # -------------------------------------------------------
 
 # python imports
-from os import listdir, makedirs, walk, remove, getlogin
+import matplotlib
+matplotlib.use('Agg') #use agg as backend instead of x11 for cluster
+from os import listdir, makedirs
 from os.path import isfile, join, exists
 import subprocess
 import numpy as np
-import shutil
 import pandas as pd
 from nilearn import image, plotting
+import matplotlib.pyplot as plt
 import subprocess
 
 # SETUP ---------------------------------------------------
@@ -72,4 +74,36 @@ subprocess.check_call([join(codedir, 'prep_unwarpFiles.sh'), outdir, fieldmap_ap
 				 acqparams_file, config_file, ref_epi])
 
 
+# MAKE FIELDMAP FIGURES ----------------------------------------------
+# Original SE maps
+fieldmap = join(outdir, 'concat_fieldmaps.nii.gz')
+print('saving images of original SE maps...')
+for i in range(3):
+    plot_title = 'orig_se_ap_' + str(i)
+    plotting.plot_anat(image.index_img(fieldmap,i), dim=-1, title=plot_title,
+                       output_file = join(fm_outdir, plot_title + '.png'))
+for i in range(3,6):
+    plot_title = 'orig_se_pa_' + str(i)
+    plotting.plot_anat(image.index_img(fieldmap,i), dim=-1, title=plot_title,
+                       output_file = join(fm_outdir, plot_title + '.png'))
 
+# Corrected SE maps
+fieldmap = join(outdir, 'topup_iout.nii.gz')
+print('saving images of corrected SE maps...')
+for i in range(3):
+    plot_title = 'corr_se_ap_' + str(i)
+    plotting.plot_anat(image.index_img(fieldmap,i), dim=-1, title=plot_title,
+                       output_file = join(fm_outdir, plot_title + '.png'))
+for i in range(3,6):
+    plot_title = 'corr_se_pa_' + str(i)
+    plotting.plot_anat(image.index_img(fieldmap,i), dim=-1, title=plot_title,
+                       output_file = join(fm_outdir, plot_title + '.png'))
+
+# Check magnitude and phase maps
+print('saving images of phase and magnitue maps...')
+plotting.plot_anat(join(outdir, 'magnitude.nii.gz'), dim=-1, title='mag map',
+                  output_file = join(fm_outdir, 'mag_map_mean.png'))
+plotting.plot_anat(join(outdir, 'magnitude_brain.nii.gz'),  dim=-1, title='mag map brain',
+                  output_file = join(fm_outdir, 'mag_map_brain.png'))
+plotting.plot_anat(join(outdir, 'topup_fout.nii.gz'),  dim=0, title='phase map',
+                   output_file = join(fm_outdir, 'phase_map.png'))
