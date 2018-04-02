@@ -5,7 +5,7 @@
 
 
 # files needed
-EPI_N=$1
+RUN_DIR=$1
 SUB_DIR=$2
 EPI_IN=$3
 EPI_OUT=$4
@@ -13,11 +13,11 @@ EPI_OUT=$4
 module load fsl
 
 # set paths
-MC_DIR=${SUB_DIR}/run${EPI_N}/mc
+MC_DIR=${SUB_DIR}/${RUN_DIR}/mc
 FM_DIR=${SUB_DIR}/unwarp_files
 
 # 1. Run motion correction using mcflirt
-echo "calc motion correction xform mats for run $EPI_N with mcflirt..."
+echo "calc motion correction xform mats for $RUN_DIR with mcflirt..."
 mcflirt -in $EPI_IN -out ${MC_DIR}/EPI_mcf -mats -plots -reffile ${FM_DIR}/refvol.nii.gz -spline_final
 echo 'done!'
 echo 
