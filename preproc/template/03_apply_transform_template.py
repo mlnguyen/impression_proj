@@ -39,6 +39,3 @@ for ind,row in epiInfo.iterrows():
 
 	output = subprocess.check_output([join(codedir, 'apply_transform.sh'), orig_nifti,
  				out_nifti, feat_outdir, refbrain])
-
-
-	print('\n')
