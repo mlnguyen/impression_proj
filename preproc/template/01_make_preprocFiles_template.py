@@ -6,6 +6,7 @@
 # 1. Prep unwarp files: 
 #     * create fieldmaps for B0 correction
 # 2. Extract ref vol for motion correction
+# 3. Outputs fieldmap images + corrected fieldmap images
 # -------------------------------------------------------
 
 # python imports

@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+# --------------------------------------------------------------------------------
+# 03_apply_transform.py
+#    1. Applies subject--> MNI standard transform using fsl's flirt
+#    2. Copies and renames processed niftis
+# -------------------------------------------------------------------------------
+
 # python imports
 from os import listdir, makedirs
 import sys

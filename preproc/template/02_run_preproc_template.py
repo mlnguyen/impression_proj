@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
 
+# ----------------------------------------------------
+# 02_run_preproc.py
+# Sbatch to submit each run as a separate job
+#   1. Runs apply_unwarp.sh which uses FSL's apply unwarp
+#      fx to apply fieldmap correction (blip up/down method)
+#      with motion correction (mcflirt)
+#   2. Runs feat preprocessing: high-pass filtering, affine
+#      allignment, spatial smoothing (FWHM: 4mm). No slice
+#      timing correction
+#   3. Outputs figures: epi slices before/after unwarping, 
+#      motion estimates, feat output
+# ----------------------------------------------------- 
+
 # python imports
 import matplotlib
 matplotlib.use('Agg')

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Wrapper function for sbatch-ing make_preprocFiles
+
 
 # Set current working directory
 #SBATCH --workdir=.
