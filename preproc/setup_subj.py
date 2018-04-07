@@ -10,14 +10,14 @@ import subprocess
 
 #---- Set subject specific variables ----#
 # Set subject ID
-subid = 'impr_g2_s01_030818'
+subid = 'impr_g2_s02_030818'
 
 # manually set scan num, type, conds
 anat_num = [3]
 fieldmap_nums = [8,9]
-pos_epi_num = [4]
-neg_epi_num = [6]
-mix_epi_num = [5]
+pos_epi_num = [5]
+neg_epi_num = [4]
+mix_epi_num = [6]
 pie_epi_num = [7]
 
 ref_scan = 'pieman'
