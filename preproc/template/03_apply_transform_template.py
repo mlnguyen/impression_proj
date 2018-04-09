@@ -36,12 +36,13 @@ print('starting transforms...\n')
 scanInfo = pd.read_csv(join(subdir, 'scanInfo.csv'), index_col=0)
 epiInfo = scanInfo[scanInfo['scanType']=='epi']
 
-for ind,row in epiInfo.iterrows():
+this_scan = int(sys.argv[1])
+scanInfo = epiInfo.iloc[this_scan-1]
 
-	print('applying transform to ' + row['preprocDir'] + '...')
-	feat_outdir = join(subdir, 'preproc', 'feat_out', row['preprocDir']+'.feat')
-	orig_nifti = join(feat_outdir, 'filtered_func_data.nii.gz')
-	out_nifti = join(subdir, 'data', subj + '_epi_' + row['scanCond'] + '.nii.gz')
+print('applying transform to ' + scanInfo['preprocDir'] + '...')
+feat_outdir = join(subdir, 'preproc', 'feat_out', scanInfo['preprocDir']+'.feat')
+orig_nifti = join(feat_outdir, 'filtered_func_data.nii.gz')
+out_nifti = join(subdir, 'data','niftis', subj + '_epi_' + scanInfo['scanCond'] + '.nii.gz')
 
-	output = subprocess.check_output([join(codedir, 'apply_transform.sh'), orig_nifti,
+output = subprocess.check_output([join(codedir, 'apply_transform.sh'), orig_nifti,
  				out_nifti, feat_outdir, refbrain])

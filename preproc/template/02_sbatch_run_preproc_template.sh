@@ -7,7 +7,7 @@
 #SBATCH --time=90
 
 # How much memory to allocate (in MB)?
-#SBATCH --cpus-per-task=1 --mem=4000
+#SBATCH --cpus-per-task=1 --mem=6000
 
 # Name of jobs?
 #SBATCH -J run_feat
